@@ -1,0 +1,42 @@
+package sample.Scenes;
+
+import javafx.application.Platform;
+import javafx.scene.Parent;
+import sample.MainStage;
+
+public class BaseScene extends Parent implements Runnable{
+    public MainStage parent;
+    private final int DELAY = 500;
+    private boolean isWorking;
+
+    BaseScene(MainStage parent) {
+        this.parent = parent;
+        setFocusTraversable(true);
+    }
+
+    protected void start() {
+        isWorking = true;
+        new Thread(this).start();
+
+    }
+
+    protected void stop() {
+        isWorking = false;
+    }
+
+    public void update(long tick) {
+
+    }
+
+    @Override
+    public void run() {
+        while (isWorking) {
+            try {
+                Thread.sleep(DELAY);
+                update(DELAY);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
