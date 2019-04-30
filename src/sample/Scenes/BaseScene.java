@@ -1,6 +1,5 @@
 package sample.Scenes;
 
-import javafx.application.Platform;
 import javafx.scene.Parent;
 import sample.MainStage;
 
@@ -24,7 +23,7 @@ public class BaseScene extends Parent implements Runnable{
         isWorking = false;
     }
 
-    public void update(long tick) {
+    public void update() {
 
     }
 
@@ -33,7 +32,7 @@ public class BaseScene extends Parent implements Runnable{
         while (isWorking) {
             try {
                 Thread.sleep(DELAY);
-                update(DELAY);
+                update();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

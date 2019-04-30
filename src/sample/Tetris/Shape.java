@@ -5,14 +5,14 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import sample.MatrixOperations.MatrixOperations;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Shape {
-    private int x = 90, y = 0;
-    private ArrayList<Rectangle> figure = new ArrayList<>();
+    private int x = 120, y = 0;
+    private ArrayList<Rectangle> shape = new ArrayList<>();
     private final int BLOCK_SIZE = 30;
     private Image currBlockImage;
     private int[][] currTetromino;
@@ -36,38 +36,48 @@ public class Shape {
         initializeShape();
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int[][] getCurrTetromino() {
+        return currTetromino;
+    }
+
+    public void setCurrTetromino(int[][] currTetromino) {
+        this.currTetromino = currTetromino;
+    }
+
+    ArrayList<Rectangle> getShape() {
+        return shape;
+    }
+
     void stepDown() {
-        for (Rectangle rectangle : figure) {
-            System.out.println(rectangle.getY());
+        for (Rectangle rectangle : shape) {
             rectangle.setY(rectangle.getY() + BLOCK_SIZE);
         }
     }
 
-    void stepLeft() {
-        for (Rectangle rectangle : figure) {
-            rectangle.setX(rectangle.getX() - BLOCK_SIZE);
+    void stepSide(int direction) {
+        for (Rectangle shape: shape) {
+            shape.setX(shape.getX() + direction * BLOCK_SIZE);
         }
     }
 
-    void stepRight() {
-        for (Rectangle rectangle : figure) {
-            rectangle.setX(rectangle.getX() + BLOCK_SIZE);
-        }
-    }
-
-    void drop() {
-        stepDown();
-    }
-
-    void getRotatedTetromino(int[][] currentTetromino) {
-        if (currentTetromino.length == 3) {
-            this.x = (int) figure.get(0).getX() - BLOCK_SIZE;
-        } else {
-            this.x = (int) figure.get(0).getX();
-        }
-        this.y = (int) figure.get(0).getY();
-        figure.clear();
-        initializeShape();
+    boolean isWrongRotate(Rectangle[][] glass) {
+        return false;
     }
 
     void initializeShape() {
@@ -78,45 +88,14 @@ public class Shape {
                     block.setFill(new ImagePattern(currBlockImage));
                     block.setArcHeight(5);
                     block.setArcWidth(5);
-                    figure.add(block);
+                    shape.add(block);
                 }
             }
         }
     }
 
-    boolean isTouchWall(Rectangle[][] glass, String keyName) {
-        for (Rectangle rectangle : figure) {
-            if (keyName.equals("LEFT") && (rectangle.getX() == 0
-                    || glass[(int) (rectangle.getY() / BLOCK_SIZE)][(int) (rectangle.getX() / BLOCK_SIZE) - 1] != null)) {
-                return true;
-            }
-            if (keyName.equals("RIGHT") && (rectangle.getX() == 270
-                    || glass[(int) (rectangle.getY() / BLOCK_SIZE)][(int) (rectangle.getX() / BLOCK_SIZE) + 1] != null)) {
-                return true;
-            }
-
-        }
-        return false;
-    }
-
-    boolean isTouchFloor(Rectangle[][] glass) {
-        for (Rectangle rectangle : figure) {
-            if (rectangle.getY() / BLOCK_SIZE == glass.length - 1
-                    || glass[(int) rectangle.getY() / BLOCK_SIZE][(int) rectangle.getX() / BLOCK_SIZE] != null) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    void leaveOnTheFloor(Rectangle[][] glass) {
-        for (Rectangle rectangle : figure) {
-            glass[(int) rectangle.getY() / BLOCK_SIZE - 1][(int) rectangle.getX() / BLOCK_SIZE] = rectangle;
-        }
-    }
-
-    void paint(Pane pane) {
-        for (Rectangle rectangle : figure) {
+    public void paint(Pane pane) {
+        for (Rectangle rectangle : shape) {
             pane.getChildren().add(rectangle);
         }
     }

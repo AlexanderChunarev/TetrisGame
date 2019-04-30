@@ -6,7 +6,7 @@ import sample.Scenes.MenuScene;
 
 public class MainStage extends Stage {
     private Scene scene;
-    public final int WIDTH = 390;
+    public final int WIDTH = 420;
     public final int HEIGHT = 450;
 
     MainStage() {
