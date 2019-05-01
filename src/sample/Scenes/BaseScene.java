@@ -3,9 +3,9 @@ package sample.Scenes;
 import javafx.scene.Parent;
 import sample.MainStage;
 
-public class BaseScene extends Parent implements Runnable{
+public class BaseScene extends Parent implements Runnable {
     public MainStage parent;
-    private final int DELAY = 3000;
+    private final int DELAY = 300;
     private boolean isWorking;
 
     BaseScene(MainStage parent) {

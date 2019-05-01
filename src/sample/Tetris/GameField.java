@@ -21,14 +21,6 @@ public class GameField extends Pane {
         setFocusTraversable(true);
         currShape = new Shape();
         currShape.paint(this);
-        for (Rectangle re : currShape.getShape()) {
-            System.out.println(re.getX() + "   " + re.getY());
-        }
-        currShape.stepSide(-1);
-        for (Rectangle re : currShape.getShape()) {
-            System.out.println(re.getX() + "   " + re.getY());
-        }
-
     }
 
     public int getScore() {
@@ -56,10 +48,7 @@ public class GameField extends Pane {
                 return;
             }
             currShape = new Shape();
-
             currShape.paint(this);
-
-            //currShape.stepDown();
         } else {
             currShape.stepDown();
         }
@@ -68,13 +57,17 @@ public class GameField extends Pane {
 
     private boolean isTouchWall(String keyName) {
         for (Rectangle rectangle : currShape.getShape()) {
+            int x = (int) (rectangle.getY() / 30 - 1);
+            int y = (int) (rectangle.getX() / 30);
+            if (x < 0) {
+                x = (int) (rectangle.getY() / 30);
+            }
             if (keyName.equals("LEFT") && (rectangle.getX() == 0
-                    || glass[(int) (rectangle.getY() / 30) - 1][(int) (rectangle.getX() / 30) - 1] != null)) {
-                System.out.println("touch");
+                    || glass[x][y - 1] != null)) {
                 return false;
             }
             if (keyName.equals("RIGHT") && (rectangle.getX() == 270
-                    || glass[(int) (rectangle.getY() / 30) - 1][(int) (rectangle.getX() / 30) + 1] != null)) {
+                    || glass[x][y + 1] != null)) {
                 return false;
             }
         }
@@ -107,18 +100,6 @@ public class GameField extends Pane {
         for (Rectangle rectangle : currShape.getShape()) {
             glass[(int) rectangle.getY() / 30 - 1][(int) rectangle.getX() / 30] = rectangle;
         }
-
-        for (int i = 0; i < glass.length; i++) {
-            for (int j = 0; j < glass[0].length; j++) {
-                if (glass[i][j] != null) {
-                    System.out.print("1");
-                } else {
-                    System.out.print("0");
-                }
-            }
-            System.out.println();
-        }
-
     }
 
     private void repaint() {
@@ -180,12 +161,6 @@ public class GameField extends Pane {
         if (!isWrongRotate()) {
 
             currShape.setCurrTetromino(testShape);
-            for (int i = 0; i < currShape.getCurrTetromino().length; i++) {
-                for (int j = 0; j < currShape.getCurrTetromino()[0].length; j++) {
-                    System.out.print(testShape[i][j]);
-                }
-                System.out.println();
-            }
             currShape.getShape().clear();
             currShape.initializeShape();
         }
