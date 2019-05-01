@@ -37,11 +37,11 @@ public class Shape {
     }
 
     public int getX() {
-        return x;
+        return x / BLOCK_SIZE;
     }
 
     public int getY() {
-        return y;
+        return y / BLOCK_SIZE;
     }
 
     public void setX(int x) {
@@ -71,13 +71,9 @@ public class Shape {
     }
 
     void stepSide(int direction) {
-        for (Rectangle shape: shape) {
+        for (Rectangle shape : shape) {
             shape.setX(shape.getX() + direction * BLOCK_SIZE);
         }
-    }
-
-    boolean isWrongRotate(Rectangle[][] glass) {
-        return false;
     }
 
     void initializeShape() {
@@ -94,7 +90,7 @@ public class Shape {
         }
     }
 
-    public void paint(Pane pane) {
+    void paint(Pane pane) {
         for (Rectangle rectangle : shape) {
             pane.getChildren().add(rectangle);
         }

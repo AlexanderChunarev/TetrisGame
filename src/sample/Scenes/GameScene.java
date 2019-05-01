@@ -25,9 +25,10 @@ public class GameScene extends BaseScene implements InitializeScene {
     GameScene(MainStage parent) {
         super(parent);
         getChildren().add(rootPane);
-        setProperties();
         listener();
+        setProperties();
         start();
+        gameField.gameController(this);
     }
 
     private BackgroundImage loadBackround() {
@@ -45,6 +46,9 @@ public class GameScene extends BaseScene implements InitializeScene {
         Platform.runLater(() -> {
             gameField.update();
             score.setText("Score: " + gameField.getScore());
+            if (gameField.getGameOver()) {
+                stop();
+            }
         });
     }
 
@@ -68,7 +72,6 @@ public class GameScene extends BaseScene implements InitializeScene {
             parent.changeScene(new MenuScene(parent));
             stop();
         });
-        gameField.gameController(this);
     }
 
     @Override

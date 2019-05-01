@@ -5,7 +5,7 @@ import sample.MainStage;
 
 public class BaseScene extends Parent implements Runnable{
     public MainStage parent;
-    private final int DELAY = 500;
+    private final int DELAY = 3000;
     private boolean isWorking;
 
     BaseScene(MainStage parent) {
