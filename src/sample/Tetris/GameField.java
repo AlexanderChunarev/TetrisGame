@@ -13,12 +13,13 @@ public class GameField extends Pane {
     private static final int GLASS_WIDTH = 13;
     private static final int GLASS_HEIGHT = 10;
     private Shape currShape;
-    private Rectangle[][] glass = new Rectangle[GLASS_WIDTH][GLASS_HEIGHT];
+    private Rectangle[][] glass;
     private int score;
     private boolean gameOver;
 
     public GameField() {
         setFocusTraversable(true);
+        glass = new Rectangle[GLASS_WIDTH][GLASS_HEIGHT];
         currShape = new Shape();
         currShape.paint(this);
     }
@@ -43,7 +44,8 @@ public class GameField extends Pane {
         if (isTouchFloor()) {
             if (!isGameOver()) {
                 leaveOnTheFloor();
-            } else {
+            }
+            else {
                 gameOver = true;
                 return;
             }
@@ -74,6 +76,15 @@ public class GameField extends Pane {
         return true;
     }
 
+    private boolean isGameOver() {
+        for (Rectangle rectangle : currShape.getShape()) {
+            if (rectangle.getY() / 30 - 1 < 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isTouchFloor() {
         for (Rectangle rectangle : currShape.getShape()) {
             if (rectangle.getY() / 30 == glass.length
@@ -83,18 +94,6 @@ public class GameField extends Pane {
         }
         return false;
     }
-
-    private boolean isGameOver() {
-        for (Rectangle rectangle : currShape.getShape()) {
-            if (rectangle.getY() == 0
-                    && (glass[(int) rectangle.getY() + 1][(int) rectangle.getX() / 30] != null
-                    || glass[(int) rectangle.getY() + 2][(int) rectangle.getX() / 30] != null)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     private void leaveOnTheFloor() {
         for (Rectangle rectangle : currShape.getShape()) {
@@ -170,6 +169,7 @@ public class GameField extends Pane {
         for (int x = 0; x < currShape.getCurrTetromino().length; x++) {
             for (int y = 0; y < currShape.getCurrTetromino()[0].length; y++) {
                 if (currShape.getCurrTetromino()[x][y] == 1) {
+
                     if (y + currShape.getY() < 0 || y + currShape.getY() > GLASS_WIDTH - 1) return true;
                     if (x + currShape.getX() < 0 || x + currShape.getX() > GLASS_HEIGHT - 1) return true;
                     if (glass[y + currShape.getY()][x + currShape.getX()] != null) return true;

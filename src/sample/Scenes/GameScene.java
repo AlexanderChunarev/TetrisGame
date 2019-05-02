@@ -13,17 +13,21 @@ import sample.MainStage;
 import java.io.File;
 
 public class GameScene extends BaseScene implements InitializeScene {
-    private BorderPane rootPane = new BorderPane();
-    private VBox menuPanel = new VBox();
-    private GameField gameField = new GameField();
-    private Button[] buttons = new Button[]{
-            new Button("New game"),
-            new Button("Pause"),
-            new Button("Back")};
+    private BorderPane rootPane;
+    private VBox menuPanel;
+    private GameField gameField;
+    private Button[] buttons;
     private Label score = new Label("Score: 0");
 
     GameScene(MainStage parent) {
         super(parent);
+        rootPane = new BorderPane();
+        menuPanel = new VBox();
+        gameField = new GameField();
+        buttons = new Button[]{
+                new Button("New game"),
+                new Button("Pause"),
+                new Button("Back")};
         getChildren().add(rootPane);
         listener();
         setProperties();

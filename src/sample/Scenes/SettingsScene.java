@@ -43,6 +43,7 @@ public class SettingsScene extends BaseScene implements InitializeScene{
     public void listener() {
         backToMEnu.setOnAction(event -> {
             setUserSettings();
+            gridPane.getChildren().clear();
             parent.changeScene(new MenuScene(parent));
         });
         for (int i = 0; i < textFields.length; i++) {

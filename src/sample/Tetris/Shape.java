@@ -1,17 +1,15 @@
 package sample.Tetris;
 
-
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import sample.MatrixOperations.MatrixOperations;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Shape {
-    private int x = 120, y = 0;
+    private int x, y;
     private ArrayList<Rectangle> shape = new ArrayList<>();
     private final int BLOCK_SIZE = 30;
     private Image currBlockImage;
@@ -33,6 +31,8 @@ public class Shape {
 
     public Shape() {
         currTetromino = getRandomTetromino();
+        x = 120;
+        y = 0;
         initializeShape();
     }
 

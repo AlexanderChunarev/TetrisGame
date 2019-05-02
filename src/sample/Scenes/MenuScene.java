@@ -11,17 +11,20 @@ import sample.MainStage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class MenuScene extends BaseScene implements InitializeScene {
-    private VBox vBox = new VBox();
-    private Button[] buttons = new Button[]{
-            new Button("Play"),
-            new Button("Settings"),
-            new Button("Help"),
-            new Button("Exit")};
+    private VBox vBox;
+    private Button[] buttons;
 
     public MenuScene(MainStage parent) {
         super(parent);
+        vBox = new VBox();
+        buttons = new Button[]{
+                new Button("Play"),
+                new Button("Settings"),
+                new Button("Help"),
+                new Button("Exit")};
         vBox.getChildren().addAll(buttons);
         setProperties();
         listener();
@@ -31,8 +34,14 @@ public class MenuScene extends BaseScene implements InitializeScene {
 
     @Override
     public void listener() {
-        buttons[0].setOnAction(event -> parent.changeScene(new GameScene(parent)));
-        buttons[1].setOnAction(event -> parent.changeScene(new SettingsScene(parent)));
+        buttons[0].setOnAction(event -> {
+
+            parent.changeScene(new GameScene(parent));
+        });
+        buttons[1].setOnAction(event -> {
+            vBox.getChildren().clear();
+            parent.changeScene(new SettingsScene(parent));
+        });
         buttons[2].setOnAction(event -> parent.changeScene(new HelpScene(parent)));
         buttons[3].setOnAction(event -> System.exit(0));
     }
@@ -53,8 +62,9 @@ public class MenuScene extends BaseScene implements InitializeScene {
 
     private Font loadFont() {
         Font font = null;
+
         try {
-            font = Font.loadFont(new FileInputStream(new File("prstartk.ttf")), 30);
+            font = Font.loadFont(new FileInputStream(new File("prstartk.ttf").getPath()), 28);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
