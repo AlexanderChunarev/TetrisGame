@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.scene.*;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import sample.Scenes.MenuScene;
 
@@ -11,6 +12,8 @@ public class MainStage extends Stage {
     MainStage() {
         setResizable(false);
         sizeToScene();
+        setTitle("Tetris");
+        getIcons().add(new Image("file:images/video-game.png"));
         setScene(new Scene(new MenuScene(this), WIDTH, HEIGHT));
         setOnCloseRequest(t -> System.exit(0));
         show();
