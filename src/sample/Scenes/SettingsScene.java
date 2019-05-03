@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -12,7 +13,7 @@ import sample.MainStage;
 import java.io.*;
 import java.util.Properties;
 
-public class SettingsScene extends BaseScene implements InitializeScene{
+public class SettingsScene extends BaseScene implements InitializeScene {
     private GridPane gridPane = new GridPane();
     private Button backToMEnu = new Button("Back");
     private Label[] labels = new Label[]{
@@ -42,6 +43,7 @@ public class SettingsScene extends BaseScene implements InitializeScene{
     @Override
     public void listener() {
         backToMEnu.setOnAction(event -> {
+            stop();
             setUserSettings();
             gridPane.getChildren().clear();
             parent.changeScene(new MenuScene(parent));
@@ -56,9 +58,9 @@ public class SettingsScene extends BaseScene implements InitializeScene{
 
     @Override
     public void setProperties() {
+        gridPane.setBackground(new Background(loadBackround()));
         gridPane.setPrefSize(parent.WIDTH, parent.HEIGHT);
         gridPane.setAlignment(Pos.TOP_CENTER);
-        gridPane.setStyle("-fx-background-color: #383838;");
         gridPane.setVgap(20);
         gridPane.setHgap(20);
         for (Label label : labels) {

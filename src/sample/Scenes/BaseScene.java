@@ -1,7 +1,11 @@
 package sample.Scenes;
 
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import sample.MainStage;
+
+import java.io.File;
 
 public class BaseScene extends Parent implements Runnable {
     public MainStage parent;
@@ -11,6 +15,16 @@ public class BaseScene extends Parent implements Runnable {
     BaseScene(MainStage parent) {
         this.parent = parent;
         setFocusTraversable(true);
+    }
+
+    protected BackgroundImage loadBackround() {
+        File file = new File("dark-grey-background-texture.jpg");
+        Image img = new Image(file.getAbsoluteFile().toURI().toString());
+        return new BackgroundImage(img,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
     }
 
     protected void start() {
@@ -23,7 +37,7 @@ public class BaseScene extends Parent implements Runnable {
         isWorking = false;
     }
 
-    public void update() {
+    protected void update() {
 
     }
 
@@ -31,8 +45,8 @@ public class BaseScene extends Parent implements Runnable {
     public void run() {
         while (isWorking) {
             try {
-                Thread.sleep(DELAY);
                 update();
+                Thread.sleep(DELAY);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

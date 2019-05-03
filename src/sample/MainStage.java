@@ -5,20 +5,18 @@ import javafx.stage.Stage;
 import sample.Scenes.MenuScene;
 
 public class MainStage extends Stage {
-    private Scene scene;
-    public final int WIDTH = 420;
-    public final int HEIGHT = 450;
+    public static final int WIDTH = 380;
+    public static final int HEIGHT = 545;
 
     MainStage() {
-        scene = new Scene(new MenuScene(this), WIDTH, HEIGHT);
         setResizable(false);
         sizeToScene();
-        setScene(scene);
+        setScene(new Scene(new MenuScene(this), WIDTH, HEIGHT));
         setOnCloseRequest(t -> System.exit(0));
         show();
     }
 
     public void changeScene(Parent parent) {
-        scene.setRoot(parent);
+        setScene(new Scene(parent, WIDTH, HEIGHT));
     }
 }

@@ -10,8 +10,8 @@ import java.io.*;
 import java.util.Properties;
 
 public class GameField extends Pane {
-    private static final int GLASS_WIDTH = 13;
-    private static final int GLASS_HEIGHT = 10;
+    static final int GLASS_HEIGHT = 20;
+    static final int GLASS_WIDTH = 10;
     private Shape currShape;
     private Rectangle[][] glass;
     private int score;
@@ -19,7 +19,7 @@ public class GameField extends Pane {
 
     public GameField() {
         setFocusTraversable(true);
-        glass = new Rectangle[GLASS_WIDTH][GLASS_HEIGHT];
+        glass = new Rectangle[GLASS_HEIGHT][GLASS_WIDTH];
         currShape = new Shape();
         currShape.paint(this);
     }
@@ -44,8 +44,7 @@ public class GameField extends Pane {
         if (isTouchFloor()) {
             if (!isGameOver()) {
                 leaveOnTheFloor();
-            }
-            else {
+            } else {
                 gameOver = true;
                 return;
             }
@@ -54,21 +53,26 @@ public class GameField extends Pane {
         } else {
             currShape.stepDown();
         }
+    }
 
+    private void tryMoveSide(String keyName, int direction) {
+        if (isTouchWall(keyName)) {
+            currShape.stepSide(direction);
+        }
     }
 
     private boolean isTouchWall(String keyName) {
-        for (Rectangle rectangle : currShape.getShape()) {
-            int x = (int) (rectangle.getY() / 30 - 1);
-            int y = (int) (rectangle.getX() / 30);
+        for (Rectangle block : currShape.getShape()) {
+            int x = (int) (block.getY() / 25 - 1);
+            int y = (int) (block.getX() / 25);
             if (x < 0) {
-                x = (int) (rectangle.getY() / 30);
+                x = (int) (block.getY() / 25);
             }
-            if (keyName.equals("LEFT") && (rectangle.getX() == 0
+            if (keyName.equals("LEFT") && (block.getX() == 0
                     || glass[x][y - 1] != null)) {
                 return false;
             }
-            if (keyName.equals("RIGHT") && (rectangle.getX() == 270
+            if (keyName.equals("RIGHT") && (block.getX() == 225
                     || glass[x][y + 1] != null)) {
                 return false;
             }
@@ -77,8 +81,8 @@ public class GameField extends Pane {
     }
 
     private boolean isGameOver() {
-        for (Rectangle rectangle : currShape.getShape()) {
-            if (rectangle.getY() / 30 - 1 < 0) {
+        for (Rectangle block : currShape.getShape()) {
+            if (block.getY() / 25 - 1 < 0) {
                 return true;
             }
         }
@@ -86,18 +90,31 @@ public class GameField extends Pane {
     }
 
     private boolean isTouchFloor() {
-        for (Rectangle rectangle : currShape.getShape()) {
-            if (rectangle.getY() / 30 == glass.length
-                    || glass[(int) rectangle.getY() / 30][(int) rectangle.getX() / 30] != null) {
+        for (Rectangle block : currShape.getShape()) {
+            if (block.getY() / 25 == glass.length
+                    || glass[(int) block.getY() / 25][(int) block.getX() / 25] != null) {
                 return true;
             }
         }
         return false;
     }
 
+    private boolean isWrongRotate() {
+        for (int x = 0; x < currShape.getCurrShapeMask().length; x++) {
+            for (int y = 0; y < currShape.getCurrShapeMask()[0].length; y++) {
+                if (currShape.getCurrShapeMask()[x][y] == 1) {
+                    if (y + currShape.getY() / 25 < 0 || y + currShape.getY() / 25 > GLASS_HEIGHT - 1) return true;
+                    if (x + currShape.getX() / 25 < 0 || x + currShape.getX() / 25 > GLASS_WIDTH - 1) return true;
+                    if (glass[y + currShape.getY() / 25][x + currShape.getX() / 25] != null) return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void leaveOnTheFloor() {
-        for (Rectangle rectangle : currShape.getShape()) {
-            glass[(int) rectangle.getY() / 30 - 1][(int) rectangle.getX() / 30] = rectangle;
+        for (Rectangle block : currShape.getShape()) {
+            glass[(int) block.getY() / 25 - 1][(int) block.getX() / 25] = block;
         }
     }
 
@@ -142,7 +159,7 @@ public class GameField extends Pane {
             for (int j = 0; j < glass[0].length; j++) {
                 glass[i][j] = glass[i - 1][j];
                 if (glass[i][j] != null) {
-                    glass[i][j].setY(glass[i][j].getY() + 30);
+                    glass[i][j].setY(glass[i][j].getY() + 25);
                 }
 
             }
@@ -150,34 +167,21 @@ public class GameField extends Pane {
     }
 
     private void rotate() {
-        int[][] testShape = MatrixOperations.rotate(currShape.getCurrTetromino());
+        int[][] testShape = MatrixOperations.rotate(currShape.getCurrShapeMask());
         if (testShape.length == 3) {
-            currShape.setX((int) (currShape.getShape().get(0).getX() - 30));
+            currShape.setX((int) (currShape.getShape().get(0).getX() - 25));
         } else {
             currShape.setX((int) (currShape.getShape().get(0).getX()));
         }
         currShape.setY((int) (currShape.getShape().get(0).getY()));
         if (!isWrongRotate()) {
 
-            currShape.setCurrTetromino(testShape);
+            currShape.setCurrShapeMask(testShape);
             currShape.getShape().clear();
             currShape.initializeShape();
         }
     }
 
-    private boolean isWrongRotate() {
-        for (int x = 0; x < currShape.getCurrTetromino().length; x++) {
-            for (int y = 0; y < currShape.getCurrTetromino()[0].length; y++) {
-                if (currShape.getCurrTetromino()[x][y] == 1) {
-
-                    if (y + currShape.getY() < 0 || y + currShape.getY() > GLASS_WIDTH - 1) return true;
-                    if (x + currShape.getX() < 0 || x + currShape.getX() > GLASS_HEIGHT - 1) return true;
-                    if (glass[y + currShape.getY()][x + currShape.getX()] != null) return true;
-                }
-            }
-        }
-        return false;
-    }
 
     public void gameController(Parent root) {
         Properties prop = new Properties();
@@ -193,19 +197,16 @@ public class GameField extends Pane {
                 repaint();
             }
             if (event.getCode().equals(KeyCode.valueOf(prop.getProperty("leftKey")))) {
-                if (isTouchWall("LEFT")) {
-                    currShape.stepSide(-1);
-                }
+                tryMoveSide("LEFT", -1);
             }
             if (event.getCode().equals(KeyCode.valueOf(prop.getProperty("rightKey")))) {
-                if (isTouchWall("RIGHT")) {
-                    currShape.stepSide(1);
-                }
+                tryMoveSide("RIGHT", 1);
             }
             if (event.getCode().equals(KeyCode.valueOf(prop.getProperty("dropKey")))) {
-                while (!isTouchFloor()) {
+                if (!isTouchFloor()) {
                     currShape.stepDown();
                 }
+
             }
         });
     }
