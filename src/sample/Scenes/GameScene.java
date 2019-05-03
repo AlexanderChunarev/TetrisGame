@@ -25,9 +25,9 @@ public class GameScene extends BaseScene implements InitializeScene {
         menuPanel = new Pane();
         gameField = new GameField();
         buttons = new Button[]{
-                new Button("New game", loadButtonImage("play.png")),
+                new Button("New game", loadButtonImage("newGame.png")),
                 new Button("Pause", loadButtonImage("pause.png")),
-                new Button("Exit")};
+                new Button("Exit", loadButtonImage("ex.png"))};
         getChildren().add(rootPane);
         listener();
         setProperties();
@@ -85,9 +85,9 @@ public class GameScene extends BaseScene implements InitializeScene {
         score.setTranslateY(300);
         score.setTextFill(Color.WHITE);
         buttons[0].setTranslateY(0);
-        buttons[1].setTranslateY(40);
-        buttons[2].setTranslateY(80);
-        for (Button button:buttons) {
+        buttons[1].setTranslateY(45);
+        buttons[2].setTranslateY(90);
+        for (Button button : buttons) {
             button.setPrefSize(105, 40);
             button.setPadding(new Insets(0));
             button.setContentDisplay(ContentDisplay.LEFT);
