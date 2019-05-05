@@ -32,7 +32,6 @@ public class GameScene extends BaseScene implements InitializeScene {
         listener();
         setProperties();
         start();
-        gameField.gameController(this);
     }
 
     private ImageView loadButtonImage(String imageName) {
@@ -48,6 +47,7 @@ public class GameScene extends BaseScene implements InitializeScene {
             score.setText("Score: " + gameField.getScore());
             if (gameField.getGameOver()) {
                 stop();
+                rootPane.setOnKeyPressed(event -> {});
             }
         });
     }
@@ -61,10 +61,12 @@ public class GameScene extends BaseScene implements InitializeScene {
         buttons[1].setOnAction(event -> {
             if (buttons[1].getText().equals("Pause")) {
                 stop();
+                rootPane.setOnKeyPressed(event1 -> {});
                 buttons[1].setText("Continue");
                 buttons[1].setGraphic(loadButtonImage("play.png"));
             } else {
                 start();
+                gameField.gameController(rootPane);
                 buttons[1].setText("Pause");
                 buttons[1].setGraphic(loadButtonImage("pause.png"));
             }
@@ -73,6 +75,7 @@ public class GameScene extends BaseScene implements InitializeScene {
             parent.changeScene(new MenuScene(parent));
             stop();
         });
+        gameField.gameController(rootPane);
     }
 
     @Override

@@ -68,12 +68,14 @@ public class Shape {
         for (Rectangle block : shape) {
             block.setY(block.getY() + BLOCK_SIZE);
         }
+        setY(getY() + BLOCK_SIZE);
     }
 
     void stepSide(int direction) {
         for (Rectangle block : shape) {
             block.setX(block.getX() + direction * BLOCK_SIZE);
         }
+        setX(getX() + direction * BLOCK_SIZE);
     }
 
     void initializeShape() {

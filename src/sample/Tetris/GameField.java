@@ -72,7 +72,7 @@ public class GameField extends Pane {
                     || glass[x][y - 1] != null)) {
                 return false;
             }
-            if (keyName.equals("RIGHT") && (block.getX() == 225
+            if (keyName.equals("RIGHT") && (block.getX() / 25 == GLASS_WIDTH - 1
                     || glass[x][y + 1] != null)) {
                 return false;
             }
@@ -91,7 +91,7 @@ public class GameField extends Pane {
 
     private boolean isTouchFloor() {
         for (Rectangle block : currShape.getShape()) {
-            if (block.getY() / 25 == glass.length
+            if (block.getY() / 25 == GLASS_HEIGHT
                     || glass[(int) block.getY() / 25][(int) block.getX() / 25] != null) {
                 return true;
             }
@@ -168,14 +168,14 @@ public class GameField extends Pane {
 
     private void rotate() {
         int[][] testShape = MatrixOperations.rotate(currShape.getCurrShapeMask());
-        if (testShape.length == 3) {
-            currShape.setX((int) (currShape.getShape().get(0).getX() - 25));
-        } else {
-            currShape.setX((int) (currShape.getShape().get(0).getX()));
+        for (Rectangle block : currShape.getShape()) {
+            if (block.getX() == currShape.getX()) {
+                currShape.setX((int) block.getX());
+                break;
+            }
         }
-        currShape.setY((int) (currShape.getShape().get(0).getY()));
+        currShape.setY(currShape.getY());
         if (!isWrongRotate()) {
-
             currShape.setCurrShapeMask(testShape);
             currShape.getShape().clear();
             currShape.initializeShape();
