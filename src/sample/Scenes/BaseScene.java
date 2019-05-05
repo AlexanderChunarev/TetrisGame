@@ -9,7 +9,7 @@ import java.io.File;
 
 public class BaseScene extends Parent implements Runnable {
     public MainStage parent;
-    private final int DELAY = 300;
+    private final int DELAY = 200;
     private boolean isWorking;
 
     BaseScene(MainStage parent) {

@@ -16,9 +16,17 @@ public class GameField extends Pane {
     private Rectangle[][] glass;
     private int score;
     private boolean gameOver;
+    private Properties prop;
 
     public GameField() {
         setFocusTraversable(true);
+        prop = new Properties();
+        try {
+            InputStream input = new FileInputStream("UserSettings.properties");
+            prop.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         glass = new Rectangle[GLASS_HEIGHT][GLASS_WIDTH];
         currShape = new Shape();
         currShape.paint(this);
@@ -184,13 +192,6 @@ public class GameField extends Pane {
 
 
     public void gameController(Parent root) {
-        Properties prop = new Properties();
-        try {
-            InputStream input = new FileInputStream("UserSettings");
-            prop.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         root.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.valueOf(prop.getProperty("rotateKey")))) {
                 rotate();

@@ -9,18 +9,26 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import sample.Tetris.GameField;
 import sample.MainStage;
+
+import java.io.*;
+import java.util.Properties;
 
 public class GameScene extends BaseScene implements InitializeScene {
     private BorderPane rootPane;
     private Pane menuPanel;
     private GameField gameField;
     private Button[] buttons;
-    private Label score = new Label("Score: 0");
+    private Label score = new Label();
+    private Label bestScore = new Label();
+    private int bestScoreVal;
+    private Properties properties;
 
     GameScene(MainStage parent) {
         super(parent);
+        properties = new Properties();
         rootPane = new BorderPane();
         menuPanel = new Pane();
         gameField = new GameField();
@@ -28,6 +36,14 @@ public class GameScene extends BaseScene implements InitializeScene {
                 new Button("New game", loadButtonImage("newGame.png")),
                 new Button("Pause", loadButtonImage("pause.png")),
                 new Button("Exit", loadButtonImage("ex.png"))};
+        try {
+            properties.load(new FileInputStream("UserSettings.properties"));
+            bestScoreVal = Integer.parseInt(properties.getProperty("bestScore"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        score.setText("Score: " + 0);
+        bestScore.setText("Best: " + bestScoreVal);
         getChildren().add(rootPane);
         listener();
         setProperties();
@@ -45,9 +61,14 @@ public class GameScene extends BaseScene implements InitializeScene {
             gameField.setFocusTraversable(true);
             gameField.update();
             score.setText("Score: " + gameField.getScore());
+            if (gameField.getScore() > bestScoreVal) {
+                bestScore.setText("Best: " + gameField.getScore());
+            }
             if (gameField.getGameOver()) {
                 stop();
-                rootPane.setOnKeyPressed(event -> {});
+                rootPane.setOnKeyPressed(event -> {
+                });
+                saveScore();
             }
         });
     }
@@ -56,12 +77,14 @@ public class GameScene extends BaseScene implements InitializeScene {
     public void listener() {
         buttons[0].setOnAction(event -> {
             stop();
+            saveScore();
             parent.changeScene(new GameScene(parent));
         });
         buttons[1].setOnAction(event -> {
             if (buttons[1].getText().equals("Pause")) {
                 stop();
-                rootPane.setOnKeyPressed(event1 -> {});
+                rootPane.setOnKeyPressed(event1 -> {
+                });
                 buttons[1].setText("Continue");
                 buttons[1].setGraphic(loadButtonImage("play.png"));
             } else {
@@ -72,10 +95,22 @@ public class GameScene extends BaseScene implements InitializeScene {
             }
         });
         buttons[2].setOnAction(event -> {
-            parent.changeScene(new MenuScene(parent));
             stop();
+            saveScore();
+            parent.changeScene(new MenuScene(parent));
         });
         gameField.gameController(rootPane);
+    }
+
+    private void saveScore() {
+        if (gameField.getScore() > bestScoreVal) {
+            properties.setProperty("bestScore", String.valueOf(gameField.getScore()));
+            try {
+                properties.store(new FileOutputStream(new File("UserSettings.properties")), "Score");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -85,22 +120,25 @@ public class GameScene extends BaseScene implements InitializeScene {
         rootPane.setPadding(new Insets(10));
         gameField.setPrefSize(250, 525);
         gameField.setStyle("-fx-background-color: rgba(0, 100, 100, 0.2); -fx-background-radius: 5;");
-        score.setTranslateY(300);
+        score.setTranslateY(MainStage.HEIGHT - 65);
+        bestScore.setTranslateY(MainStage.HEIGHT - 45);
         score.setTextFill(Color.WHITE);
-        buttons[0].setTranslateY(0);
-        buttons[1].setTranslateY(45);
-        buttons[2].setTranslateY(90);
-        for (Button button : buttons) {
-            button.setPrefSize(105, 40);
-            button.setPadding(new Insets(0));
-            button.setContentDisplay(ContentDisplay.LEFT);
-            button.setStyle("-fx-base: #2f3033;" +
+        bestScore.setTextFill(Color.WHITE);
+        score.setFont(new Font(14));
+        bestScore.setFont(new Font(14));
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setTranslateY(i * 45);
+            buttons[i].setPrefSize(105, 40);
+            buttons[i].setPadding(new Insets(0));
+            buttons[i].setContentDisplay(ContentDisplay.LEFT);
+            buttons[i].setStyle("-fx-base: #2f3033;" +
                     "-fx-background-radius: 5;" +
                     "-fx-focus-color: transparent;" +
                     "-fx-background-insets: -1.4, 0, 1, 2;");
+
         }
         menuPanel.getChildren().addAll(buttons);
-        menuPanel.getChildren().add(score);
+        menuPanel.getChildren().addAll(score, bestScore);
         rootPane.setLeft(gameField);
         rootPane.setRight(menuPanel);
     }

@@ -54,7 +54,7 @@ public class MenuScene extends BaseScene implements InitializeScene {
     @Override
     public void setProperties() {
         vBox.setBackground(new Background(loadBackround()));
-        vBox.setPrefSize(parent.WIDTH, parent.HEIGHT);
+        vBox.setPrefSize(MainStage.WIDTH, MainStage.HEIGHT);
         vBox.setAlignment(Pos.BASELINE_CENTER);
         vBox.setPadding(new Insets(30, 0, 30, 0));
         vBox.setSpacing(10);

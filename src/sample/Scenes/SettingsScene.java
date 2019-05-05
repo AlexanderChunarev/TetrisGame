@@ -59,7 +59,7 @@ public class SettingsScene extends BaseScene implements InitializeScene {
     @Override
     public void setProperties() {
         gridPane.setBackground(new Background(loadBackround()));
-        gridPane.setPrefSize(parent.WIDTH, parent.HEIGHT);
+        gridPane.setPrefSize(MainStage.WIDTH, MainStage.HEIGHT);
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setVgap(20);
         gridPane.setHgap(20);
@@ -76,7 +76,7 @@ public class SettingsScene extends BaseScene implements InitializeScene {
     private void setUserSettings() {
         try {
             Properties props = new Properties();
-            OutputStream out = new FileOutputStream(new File("UserSettings"));
+            OutputStream out = new FileOutputStream(new File("UserSettings.properties"));
             if (textFields[0].getText() != null) {
                 props.setProperty("leftKey", textFields[0].getText());
             }
@@ -99,7 +99,7 @@ public class SettingsScene extends BaseScene implements InitializeScene {
         Properties prop = new Properties();
         InputStream input;
         try {
-            input = new FileInputStream("UserSettings");
+            input = new FileInputStream("UserSettings.properties");
             prop.load(input);
             textFields[0].setText(prop.getProperty("leftKey"));
             textFields[1].setText(prop.getProperty("rightKey"));
