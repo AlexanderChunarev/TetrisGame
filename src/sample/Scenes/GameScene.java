@@ -37,7 +37,7 @@ public class GameScene extends BaseScene implements InitializeScene {
                 new Button("Pause", loadButtonImage("pause.png")),
                 new Button("Exit", loadButtonImage("ex.png"))};
         try {
-            properties.load(new FileInputStream("UserSettings.properties"));
+            properties.load(new FileInputStream("score.properties"));
             bestScoreVal = Integer.parseInt(properties.getProperty("bestScore"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,12 +75,12 @@ public class GameScene extends BaseScene implements InitializeScene {
 
     @Override
     public void listener() {
-        buttons[0].setOnAction(event -> {
+        buttons[0].setOnMouseClicked(event -> {
             stop();
             saveScore();
             parent.changeScene(new GameScene(parent));
         });
-        buttons[1].setOnAction(event -> {
+        buttons[1].setOnMouseClicked(event -> {
             if (buttons[1].getText().equals("Pause")) {
                 stop();
                 rootPane.setOnKeyPressed(event1 -> {
@@ -94,7 +94,7 @@ public class GameScene extends BaseScene implements InitializeScene {
                 buttons[1].setGraphic(loadButtonImage("pause.png"));
             }
         });
-        buttons[2].setOnAction(event -> {
+        buttons[2].setOnMouseClicked(event -> {
             stop();
             saveScore();
             parent.changeScene(new MenuScene(parent));
@@ -106,7 +106,7 @@ public class GameScene extends BaseScene implements InitializeScene {
         if (gameField.getScore() > bestScoreVal) {
             properties.setProperty("bestScore", String.valueOf(gameField.getScore()));
             try {
-                properties.store(new FileOutputStream(new File("UserSettings.properties")), "Score");
+                properties.store(new FileOutputStream(new File("score.properties")), "Score");
             } catch (IOException e) {
                 e.printStackTrace();
             }
