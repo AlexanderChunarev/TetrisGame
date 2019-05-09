@@ -10,10 +10,10 @@ import java.util.Random;
 
 public class Shape {
     private int x, y;
-    private ArrayList<Rectangle> shape = new ArrayList<>();
-    private final int BLOCK_SIZE = 25;
-    private Image currBlockImage;
-    private int[][] currShapeMask;
+    private ArrayList<Rectangle> currShape = new ArrayList<>();
+    private final int TETROMINO_SIZE = 25;
+    private Image currTetrominoImage;
+    private int[][] currTetrominoMask;
     private int[][] TShape = {{0, 1, 0},
             {1, 1, 1}};
     private int[][] JShape = {{1, 0, 0},
@@ -30,8 +30,8 @@ public class Shape {
     private Random rand = new Random();
 
     public Shape() {
-        currShapeMask = getRandomShape();
-        x = GameField.GLASS_WIDTH / 2 * BLOCK_SIZE - BLOCK_SIZE;
+        currTetrominoMask = getRandomShape();
+        x = GameField.GLASS_WIDTH / 2 * TETROMINO_SIZE - TETROMINO_SIZE;
         y = 0;
         initializeShape();
     }
@@ -52,48 +52,48 @@ public class Shape {
         this.y = y;
     }
 
-    public int[][] getCurrShapeMask() {
-        return currShapeMask;
+    public int[][] getCurrTetrominoMask() {
+        return currTetrominoMask;
     }
 
-    public void setCurrShapeMask(int[][] currShapeMask) {
-        this.currShapeMask = currShapeMask;
+    public void setCurrTetrominoMask(int[][] currTetrominoMask) {
+        this.currTetrominoMask = currTetrominoMask;
     }
 
-    public ArrayList<Rectangle> getShape() {
-        return shape;
+    public ArrayList<Rectangle> getCurrTetromino() {
+        return currShape;
     }
 
     void stepDown() {
-        for (Rectangle block : shape) {
-            block.setY(block.getY() + BLOCK_SIZE);
+        for (Rectangle tetromino : currShape) {
+            tetromino.setY(tetromino.getY() + TETROMINO_SIZE);
         }
-        setY(getY() + BLOCK_SIZE);
+        setY(getY() + TETROMINO_SIZE);
     }
 
     void stepSide(int direction) {
-        for (Rectangle block : shape) {
-            block.setX(block.getX() + direction * BLOCK_SIZE);
+        for (Rectangle tetromino : currShape) {
+            tetromino.setX(tetromino.getX() + direction * TETROMINO_SIZE);
         }
-        setX(getX() + direction * BLOCK_SIZE);
+        setX(getX() + direction * TETROMINO_SIZE);
     }
 
     void initializeShape() {
-        for (int x = 0; x < currShapeMask.length; x++) {
-            for (int y = 0; y < currShapeMask[0].length; y++) {
-                if (currShapeMask[x][y] == 1) {
-                    Rectangle block = new Rectangle(this.x + 25 * y, this.y + 25 * x, 24, 24);
-                    block.setFill(new ImagePattern(currBlockImage));
-                    block.setArcHeight(5);
-                    block.setArcWidth(5);
-                    shape.add(block);
+        for (int x = 0; x < currTetrominoMask.length; x++) {
+            for (int y = 0; y < currTetrominoMask[0].length; y++) {
+                if (currTetrominoMask[x][y] == 1) {
+                    Rectangle tetromino = new Rectangle(this.x + 25 * y, this.y + 25 * x, 24, 24);
+                    tetromino.setFill(new ImagePattern(currTetrominoImage));
+                    tetromino.setArcHeight(5);
+                    tetromino.setArcWidth(5);
+                    currShape.add(tetromino);
                 }
             }
         }
     }
 
     void paint(Pane pane) {
-        for (Rectangle rectangle : shape) {
+        for (Rectangle rectangle : currShape) {
             pane.getChildren().add(rectangle);
         }
     }
@@ -101,25 +101,25 @@ public class Shape {
     private int[][] getRandomShape() {
         switch (rand.nextInt(7)) {
             case 0:
-                currBlockImage = new Image(getClass().getResourceAsStream("/resources/green.png"));
+                currTetrominoImage = new Image(getClass().getResourceAsStream("/resources/green.png"));
                 return TShape;
             case 1:
-                currBlockImage = new Image(getClass().getResourceAsStream("/resources/blue.png"));
+                currTetrominoImage = new Image(getClass().getResourceAsStream("/resources/blue.png"));
                 return LShape;
             case 2:
-                currBlockImage = new Image(getClass().getResourceAsStream("/resources/orange.png"));
+                currTetrominoImage = new Image(getClass().getResourceAsStream("/resources/orange.png"));
                 return ZShape;
             case 3:
-                currBlockImage = new Image(getClass().getResourceAsStream("/resources/red.png"));
+                currTetrominoImage = new Image(getClass().getResourceAsStream("/resources/red.png"));
                 return SShape;
             case 4:
-                currBlockImage = new Image(getClass().getResourceAsStream("/resources/green.png"));
+                currTetrominoImage = new Image(getClass().getResourceAsStream("/resources/green.png"));
                 return LineShape;
             case 5:
-                currBlockImage = new Image(getClass().getResourceAsStream("/resources/fiolet.png"));
+                currTetrominoImage = new Image(getClass().getResourceAsStream("/resources/fiolet.png"));
                 return SquareShape;
             case 6:
-                currBlockImage = new Image(getClass().getResourceAsStream("/resources/orange.png"));
+                currTetrominoImage = new Image(getClass().getResourceAsStream("/resources/orange.png"));
                 return JShape;
         }
         return null;

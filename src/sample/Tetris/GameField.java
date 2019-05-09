@@ -60,15 +60,13 @@ public class GameField extends Pane {
 
     public void update() {
         tryMoveDown();
-        if (isFilled()) {
-            removeFilledRow();
-            repaint();
-        }
+        removeFilledRow();
+
     }
 
     private void drawNext() {
         group.getChildren().clear();
-        for (Rectangle tetromino: nextShape.getShape()) {
+        for (Rectangle tetromino : nextShape.getCurrTetromino()) {
             tetromino.setX(tetromino.getX() - 100);
             group.getChildren().add(tetromino);
         }
@@ -85,7 +83,7 @@ public class GameField extends Pane {
             currShape = nextShape;
             nextShape = new Shape();
             drawNext();
-            for (Rectangle tetromino: currShape.getShape()) {
+            for (Rectangle tetromino : currShape.getCurrTetromino()) {
                 tetromino.setX(tetromino.getX() + 100);
             }
             currShape.paint(this);
@@ -101,7 +99,7 @@ public class GameField extends Pane {
     }
 
     private boolean isTouchWall(String keyName) {
-        for (Rectangle block : currShape.getShape()) {
+        for (Rectangle block : currShape.getCurrTetromino()) {
             int x = (int) (block.getY() / 25 - 1);
             int y = (int) (block.getX() / 25);
             if (x < 0) {
@@ -120,7 +118,7 @@ public class GameField extends Pane {
     }
 
     private boolean isGameOver() {
-        for (Rectangle block : currShape.getShape()) {
+        for (Rectangle block : currShape.getCurrTetromino()) {
             if (block.getY() / 25 - 1 < 0) {
                 return true;
             }
@@ -129,7 +127,7 @@ public class GameField extends Pane {
     }
 
     private boolean isTouchFloor() {
-        for (Rectangle block : currShape.getShape()) {
+        for (Rectangle block : currShape.getCurrTetromino()) {
             if (block.getY() / 25 == GLASS_HEIGHT
                     || glass[(int) block.getY() / 25][(int) block.getX() / 25] != null) {
                 return true;
@@ -139,9 +137,9 @@ public class GameField extends Pane {
     }
 
     private boolean isWrongRotate() {
-        for (int x = 0; x < currShape.getCurrShapeMask().length; x++) {
-            for (int y = 0; y < currShape.getCurrShapeMask()[0].length; y++) {
-                if (currShape.getCurrShapeMask()[x][y] == 1) {
+        for (int x = 0; x < currShape.getCurrTetrominoMask().length; x++) {
+            for (int y = 0; y < currShape.getCurrTetrominoMask()[0].length; y++) {
+                if (currShape.getCurrTetrominoMask()[x][y] == 1) {
                     if (y + currShape.getY() / 25 < 0 || y + currShape.getY() / 25 > GLASS_HEIGHT - 1) return true;
                     if (x + currShape.getX() / 25 < 0 || x + currShape.getX() / 25 > GLASS_WIDTH - 1) return true;
                     if (glass[y + currShape.getY() / 25][x + currShape.getX() / 25] != null) return true;
@@ -152,7 +150,7 @@ public class GameField extends Pane {
     }
 
     private void leaveOnTheFloor() {
-        for (Rectangle block : currShape.getShape()) {
+        for (Rectangle block : currShape.getCurrTetromino()) {
             glass[(int) block.getY() / 25 - 1][(int) block.getX() / 25] = block;
         }
     }
@@ -173,23 +171,23 @@ public class GameField extends Pane {
         currShape.paint(this);
     }
 
-    private boolean isFilled() {
-        for (int i = 0; i < glass.length; i++) {
-            int count = MatrixOperations.getCount(glass, i);
-            if (count == glass[0].length) {
-                return true;
-            }
+    private int getCount(Rectangle[][] matrix, int i) {
+        int count;
+        count = 0;
+        for (int j = 0; j < matrix[0].length; j++) {
+            if (matrix[i][j] != null) count++;
         }
-        return false;
+        return count;
     }
 
     private void removeFilledRow() {
         for (int i = 0; i < glass.length; i++) {
-            int count = MatrixOperations.getCount(glass, i);
+            int count = getCount(glass, i);
             if (count == glass[0].length) {
                 moveGlassDown(i);
                 score += 100;
                 removedLines++;
+                repaint();
             }
         }
     }
@@ -207,8 +205,8 @@ public class GameField extends Pane {
     }
 
     private void rotate() {
-        int[][] testShape = MatrixOperations.rotate(currShape.getCurrShapeMask());
-        for (Rectangle block : currShape.getShape()) {
+        int[][] testShape = MatrixOperations.rotate(currShape.getCurrTetrominoMask());
+        for (Rectangle block : currShape.getCurrTetromino()) {
             if (block.getX() == currShape.getX()) {
                 currShape.setX((int) block.getX());
                 break;
@@ -216,8 +214,8 @@ public class GameField extends Pane {
         }
         currShape.setY(currShape.getY());
         if (!isWrongRotate()) {
-            currShape.setCurrShapeMask(testShape);
-            currShape.getShape().clear();
+            currShape.setCurrTetrominoMask(testShape);
+            currShape.getCurrTetromino().clear();
             currShape.initializeShape();
         }
     }

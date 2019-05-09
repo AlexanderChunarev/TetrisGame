@@ -28,13 +28,4 @@ public class MatrixOperations {
     public static int[][] rotate(int[][] matrix) {
         return swap(transposeMatrix(matrix));
     }
-
-    public static int getCount(Rectangle[][] matrix, int i) {
-        int count;
-        count = 0;
-        for (int j = 0; j < matrix[0].length; j++) {
-            if (matrix[i][j] != null) count++;
-        }
-        return count;
-    }
 }
