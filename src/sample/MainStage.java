@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import sample.Scenes.MenuScene;
 
 public class MainStage extends Stage {
-    public static final int WIDTH = 380;
+    public static final int WIDTH = 400;
     public static final int HEIGHT = 545;
 
     MainStage() {

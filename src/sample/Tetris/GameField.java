@@ -1,5 +1,6 @@
 package sample.Tetris;
 
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -12,7 +13,9 @@ import java.util.Properties;
 public class GameField extends Pane {
     static final int GLASS_HEIGHT = 20;
     static final int GLASS_WIDTH = 10;
+    private Group group = new Group();
     private Shape currShape;
+    private Shape nextShape;
     private Rectangle[][] glass;
     private int score;
     private boolean gameOver;
@@ -29,8 +32,15 @@ public class GameField extends Pane {
         }
         glass = new Rectangle[GLASS_HEIGHT][GLASS_WIDTH];
         currShape = new Shape();
+        nextShape = new Shape();
         currShape.paint(this);
+        drawNext();
     }
+
+    public Group getGroup() {
+        return group;
+    }
+
 
     public int getScore() {
         return score;
@@ -48,6 +58,14 @@ public class GameField extends Pane {
         }
     }
 
+    private void drawNext() {
+        group.getChildren().clear();
+        for (Rectangle tetromino: nextShape.getShape()) {
+            tetromino.setX(tetromino.getX() - 100);
+            group.getChildren().add(tetromino);
+        }
+    }
+
     private void tryMoveDown() {
         if (isTouchFloor()) {
             if (!isGameOver()) {
@@ -56,7 +74,12 @@ public class GameField extends Pane {
                 gameOver = true;
                 return;
             }
-            currShape = new Shape();
+            currShape = nextShape;
+            nextShape = new Shape();
+            drawNext();
+            for (Rectangle tetromino: currShape.getShape()) {
+                tetromino.setX(tetromino.getX() + 100);
+            }
             currShape.paint(this);
         } else {
             currShape.stepDown();

@@ -10,7 +10,6 @@ public class Main extends Application {
         new MainStage();
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }

@@ -19,6 +19,7 @@ import java.util.Properties;
 public class GameScene extends BaseScene implements InitializeScene {
     private BorderPane rootPane;
     private Pane menuPanel;
+    private Pane nextShapePane;
     private GameField gameField;
     private Button[] buttons;
     private Label score = new Label();
@@ -31,6 +32,7 @@ public class GameScene extends BaseScene implements InitializeScene {
         properties = new Properties();
         rootPane = new BorderPane();
         menuPanel = new Pane();
+        nextShapePane = new Pane();
         gameField = new GameField();
         buttons = new Button[]{
                 new Button("New game", loadButtonImage("newGame.png")),
@@ -128,7 +130,7 @@ public class GameScene extends BaseScene implements InitializeScene {
         bestScore.setFont(new Font(14));
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setTranslateY(i * 45);
-            buttons[i].setPrefSize(105, 40);
+            buttons[i].setPrefSize(120, 40);
             buttons[i].setPadding(new Insets(0));
             buttons[i].setContentDisplay(ContentDisplay.LEFT);
             buttons[i].setStyle("-fx-base: #2f3033;" +
@@ -137,6 +139,9 @@ public class GameScene extends BaseScene implements InitializeScene {
                     "-fx-background-insets: -1.4, 0, 1, 2;");
 
         }
+        gameField.getGroup().setTranslateY(150);
+        gameField.getGroup().setTranslateX(10);
+        menuPanel.getChildren().add(gameField.getGroup());
         menuPanel.getChildren().addAll(buttons);
         menuPanel.getChildren().addAll(score, bestScore);
         rootPane.setLeft(gameField);
