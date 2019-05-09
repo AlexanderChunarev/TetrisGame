@@ -1,7 +1,5 @@
 package sample.MatrixOperations;
 
-import javafx.scene.shape.Rectangle;
-
 public class MatrixOperations {
 
     private static int[][] transposeMatrix(int[][] matrix) {

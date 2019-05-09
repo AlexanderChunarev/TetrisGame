@@ -1,5 +1,6 @@
 package sample.Scenes;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import sample.Tetris.GameField;
 import sample.MainStage;
 
@@ -23,11 +25,14 @@ public class GameScene extends BaseScene implements InitializeScene {
     private Button[] buttons;
     private Label score = new Label();
     private Label bestScore = new Label();
+    private Label gameOver = new Label();
     private int bestScoreVal;
     private Properties properties;
+    private FadeTransition fadeTransition;
 
     GameScene(MainStage parent) {
         super(parent);
+        fadeTransition = new FadeTransition(Duration.seconds(4), new Label("Game Over"));
         properties = new Properties();
         rootPane = new BorderPane();
         menuPanel = new Pane();
@@ -44,6 +49,7 @@ public class GameScene extends BaseScene implements InitializeScene {
         }
         score.setText("Score: " + 0);
         bestScore.setText("Best: " + bestScoreVal);
+        gameOver.setText("GameOver");
         getChildren().add(rootPane);
         listener();
         setProperties();
@@ -64,7 +70,6 @@ public class GameScene extends BaseScene implements InitializeScene {
                 bestScore.setText("Best: " + gameField.getScore());
             }
             if (gameField.getRemovedLines() >= 5) {
-
                 if (getDELAY() != 50) {
                     setDELAY(getDELAY() - 50);
                     System.out.println(getDELAY());
@@ -73,6 +78,12 @@ public class GameScene extends BaseScene implements InitializeScene {
             }
             if (gameField.getGameOver()) {
                 stop();
+                gameField.getChildren().add(gameOver);
+                fadeTransition.setNode(gameOver);
+                fadeTransition.setFromValue(0.0);
+                fadeTransition.setToValue(1.0);
+                fadeTransition.setCycleCount(1);
+                fadeTransition.play();
                 rootPane.setOnKeyPressed(event -> {
                 });
                 saveScore();
@@ -147,6 +158,10 @@ public class GameScene extends BaseScene implements InitializeScene {
         }
         gameField.getGroup().setTranslateY(150);
         gameField.getGroup().setTranslateX(10);
+        gameOver.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/prstartk.ttf"), 28));
+        gameOver.setTextFill(Color.WHITE);
+        gameOver.setTranslateX(10);
+        gameOver.setTranslateY(225);
         menuPanel.getChildren().add(gameField.getGroup());
         menuPanel.getChildren().addAll(buttons);
         menuPanel.getChildren().addAll(score, bestScore);
