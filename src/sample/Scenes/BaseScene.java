@@ -5,8 +5,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import sample.MainStage;
 
-import java.io.File;
-
 public class BaseScene extends Parent implements Runnable {
     public MainStage parent;
     private int DELAY = 500;
@@ -26,9 +24,8 @@ public class BaseScene extends Parent implements Runnable {
     }
 
     protected BackgroundImage loadBackround() {
-        File file = new File("dark-grey-background-texture.jpg");
-        Image img = new Image(file.getAbsoluteFile().toURI().toString());
-        return new BackgroundImage(img,
+        Image image = new Image(getClass().getResourceAsStream("/resources/dark-grey-background-texture.png"));
+        return new BackgroundImage(image,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,

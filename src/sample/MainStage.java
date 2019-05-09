@@ -13,7 +13,7 @@ public class MainStage extends Stage {
         setResizable(false);
         sizeToScene();
         setTitle("Tetris");
-        getIcons().add(new Image("file:images/video-game.png"));
+        getIcons().add( new Image(getClass().getResourceAsStream("/resources/video-game.png")));
         setScene(new Scene(new MenuScene(this), WIDTH, HEIGHT));
         setOnCloseRequest(t -> System.exit(0));
         show();

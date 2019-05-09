@@ -43,7 +43,6 @@ public class SettingsScene extends BaseScene implements InitializeScene {
     @Override
     public void listener() {
         backToMEnu.setOnAction(event -> {
-            stop();
             setUserSettings();
             gridPane.getChildren().clear();
             parent.changeScene(new MenuScene(parent));
@@ -76,7 +75,7 @@ public class SettingsScene extends BaseScene implements InitializeScene {
     private void setUserSettings() {
         try {
             Properties props = new Properties();
-            OutputStream out = new FileOutputStream(new File("UserSettings.properties"));
+            OutputStream out = new FileOutputStream(new File("src/UserSettings.properties"));
             if (textFields[0].getText() != null) {
                 props.setProperty("leftKey", textFields[0].getText());
             }
@@ -99,7 +98,7 @@ public class SettingsScene extends BaseScene implements InitializeScene {
         Properties prop = new Properties();
         InputStream input;
         try {
-            input = new FileInputStream("UserSettings.properties");
+            input = new FileInputStream("src/UserSettings.properties");
             prop.load(input);
             textFields[0].setText(prop.getProperty("leftKey"));
             textFields[1].setText(prop.getProperty("rightKey"));

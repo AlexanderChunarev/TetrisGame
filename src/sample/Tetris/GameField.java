@@ -26,7 +26,7 @@ public class GameField extends Pane {
         setFocusTraversable(true);
         prop = new Properties();
         try {
-            InputStream input = new FileInputStream("UserSettings.properties");
+            InputStream input = new FileInputStream("src/UserSettings.properties");
             prop.load(input);
         } catch (IOException e) {
             e.printStackTrace();

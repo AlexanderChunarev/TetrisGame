@@ -9,10 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import sample.MainStage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 public class MenuScene extends BaseScene implements InitializeScene {
     private VBox vBox;
     private Button[] buttons;
@@ -28,23 +24,19 @@ public class MenuScene extends BaseScene implements InitializeScene {
         setProperties();
         listener();
         getChildren().add(vBox);
-        start();
     }
 
     @Override
     public void listener() {
         buttons[0].setOnAction(event -> {
-            stop();
             vBox.getChildren().clear();
             parent.changeScene(new GameScene(parent));
         });
         buttons[1].setOnAction(event -> {
-            stop();
             vBox.getChildren().clear();
             parent.changeScene(new SettingsScene(parent));
         });
         buttons[2].setOnAction(event -> {
-            stop();
             vBox.getChildren().clear();
             parent.changeScene(new HelpScene(parent));
         });
@@ -67,12 +59,6 @@ public class MenuScene extends BaseScene implements InitializeScene {
     }
 
     private Font loadFont() {
-        Font font = null;
-        try {
-            font = Font.loadFont(new FileInputStream(new File("prstartk.ttf").getPath()), 32);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return font;
+        return Font.loadFont(getClass().getResourceAsStream("/resources/prstartk.ttf"), 32);
     }
 }

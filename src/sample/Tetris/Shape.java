@@ -101,25 +101,25 @@ public class Shape {
     private int[][] getRandomShape() {
         switch (rand.nextInt(7)) {
             case 0:
-                currBlockImage = new Image("file:images/greenBlock.png");
+                currBlockImage = new Image(getClass().getResourceAsStream("/resources/green.png"));
                 return TShape;
             case 1:
-                currBlockImage = new Image("file:images/blueBlock.png");
+                currBlockImage = new Image(getClass().getResourceAsStream("/resources/blue.png"));
                 return LShape;
             case 2:
-                currBlockImage = new Image("file:images/orangeBlock.png");
+                currBlockImage = new Image(getClass().getResourceAsStream("/resources/orange.png"));
                 return ZShape;
             case 3:
-                currBlockImage = new Image("file:images/redBlock.png");
+                currBlockImage = new Image(getClass().getResourceAsStream("/resources/red.png"));
                 return SShape;
             case 4:
-                currBlockImage = new Image("file:images/greenBlock.png");
+                currBlockImage = new Image(getClass().getResourceAsStream("/resources/green.png"));
                 return LineShape;
             case 5:
-                currBlockImage = new Image("file:images/fioletBlock.png");
+                currBlockImage = new Image(getClass().getResourceAsStream("/resources/fiolet.png"));
                 return SquareShape;
             case 6:
-                currBlockImage = new Image("file:images/blueBlock.png");
+                currBlockImage = new Image(getClass().getResourceAsStream("/resources/orange.png"));
                 return JShape;
         }
         return null;

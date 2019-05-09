@@ -35,9 +35,9 @@ public class GameScene extends BaseScene implements InitializeScene {
         buttons = new Button[]{
                 new Button("New game", loadButtonImage("newGame.png")),
                 new Button("Pause", loadButtonImage("pause.png")),
-                new Button("Exit", loadButtonImage("ex.png"))};
+                new Button("Exit", loadButtonImage("exit.png"))};
         try {
-            properties.load(new FileInputStream("score.properties"));
+            properties.load(new FileInputStream("src/score.properties"));
             bestScoreVal = Integer.parseInt(properties.getProperty("bestScore"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,13 +52,12 @@ public class GameScene extends BaseScene implements InitializeScene {
 
     private ImageView loadButtonImage(String imageName) {
         return new ImageView(
-                new Image("file:images/" + imageName));
+                new Image(getClass().getResourceAsStream("/resources/" + imageName)));
     }
 
     @Override
     public void update() {
         Platform.runLater(() -> {
-            gameField.setFocusTraversable(true);
             gameField.update();
             score.setText("Score: " + gameField.getScore());
             if (gameField.getScore() > bestScoreVal) {
@@ -135,6 +134,7 @@ public class GameScene extends BaseScene implements InitializeScene {
         score.setFont(new Font(14));
         bestScore.setFont(new Font(14));
         for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setFocusTraversable(false);
             buttons[i].setTranslateY(i * 45);
             buttons[i].setPrefSize(120, 40);
             buttons[i].setPadding(new Insets(0));
