@@ -18,6 +18,7 @@ public class GameField extends Pane {
     private Shape nextShape;
     private Rectangle[][] glass;
     private int score;
+    private int removedLines;
     private boolean gameOver;
     private Properties prop;
 
@@ -37,10 +38,17 @@ public class GameField extends Pane {
         drawNext();
     }
 
+    public int getRemovedLines() {
+        return removedLines;
+    }
+
+    public void setRemovedLines(int removedLines) {
+        this.removedLines = removedLines;
+    }
+
     public Group getGroup() {
         return group;
     }
-
 
     public int getScore() {
         return score;
@@ -181,6 +189,7 @@ public class GameField extends Pane {
             if (count == glass[0].length) {
                 moveGlassDown(i);
                 score += 100;
+                removedLines++;
             }
         }
     }

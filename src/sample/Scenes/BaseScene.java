@@ -9,7 +9,7 @@ import java.io.File;
 
 public class BaseScene extends Parent implements Runnable {
     public MainStage parent;
-    private final int DELAY = 300;
+    private int DELAY = 500;
     private boolean isWorking;
 
     BaseScene(MainStage parent) {
@@ -17,8 +17,12 @@ public class BaseScene extends Parent implements Runnable {
         setFocusTraversable(true);
     }
 
-    BaseScene() {
+    public int getDELAY() {
+        return DELAY;
+    }
 
+    public void setDELAY(int DELAY) {
+        this.DELAY = DELAY;
     }
 
     protected BackgroundImage loadBackround() {

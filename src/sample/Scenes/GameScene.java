@@ -19,7 +19,6 @@ import java.util.Properties;
 public class GameScene extends BaseScene implements InitializeScene {
     private BorderPane rootPane;
     private Pane menuPanel;
-    private Pane nextShapePane;
     private GameField gameField;
     private Button[] buttons;
     private Label score = new Label();
@@ -32,7 +31,6 @@ public class GameScene extends BaseScene implements InitializeScene {
         properties = new Properties();
         rootPane = new BorderPane();
         menuPanel = new Pane();
-        nextShapePane = new Pane();
         gameField = new GameField();
         buttons = new Button[]{
                 new Button("New game", loadButtonImage("newGame.png")),
@@ -65,6 +63,14 @@ public class GameScene extends BaseScene implements InitializeScene {
             score.setText("Score: " + gameField.getScore());
             if (gameField.getScore() > bestScoreVal) {
                 bestScore.setText("Best: " + gameField.getScore());
+            }
+            if (gameField.getRemovedLines() >= 5) {
+
+                if (getDELAY() != 50) {
+                    setDELAY(getDELAY() - 50);
+                    System.out.println(getDELAY());
+                    gameField.setRemovedLines(gameField.getRemovedLines() - 5);
+                }
             }
             if (gameField.getGameOver()) {
                 stop();
