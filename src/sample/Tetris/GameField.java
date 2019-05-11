@@ -5,7 +5,6 @@ import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import sample.MatrixOperations.MatrixOperations;
 
 import java.io.*;
 import java.util.Properties;
@@ -17,7 +16,7 @@ public class GameField extends Pane {
     private Shape currShape;
     private Shape nextShape;
     private Rectangle[][] glass;
-    private int score;
+    private float score;
     private int removedLines;
     private boolean gameOver;
     private Properties prop;
@@ -50,7 +49,7 @@ public class GameField extends Pane {
         return group;
     }
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
@@ -171,21 +170,18 @@ public class GameField extends Pane {
         currShape.paint(this);
     }
 
-    private int getCount(Rectangle[][] matrix, int i) {
-        int count;
-        count = 0;
-        for (int j = 0; j < matrix[0].length; j++) {
-            if (matrix[i][j] != null) count++;
-        }
-        return count;
-    }
-
     private void removeFilledRow() {
+        int count;
         for (int i = 0; i < glass.length; i++) {
-            int count = getCount(glass, i);
+            count = 0;
+            for (int j = 0; j < glass[0].length; j++) {
+                if (glass[i][j] != null) {
+                    count++;
+                }
+            }
             if (count == glass[0].length) {
                 moveGlassDown(i);
-                score += 100;
+                score += 100 * 1.25;
                 removedLines++;
                 repaint();
             }
@@ -205,21 +201,13 @@ public class GameField extends Pane {
     }
 
     private void rotate() {
-        int[][] testShape = MatrixOperations.rotate(currShape.getCurrTetrominoMask());
-        for (Rectangle block : currShape.getCurrTetromino()) {
-            if (block.getX() == currShape.getX()) {
-                currShape.setX((int) block.getX());
-                break;
-            }
-        }
         currShape.setY(currShape.getY());
         if (!isWrongRotate()) {
-            currShape.setCurrTetrominoMask(testShape);
+            currShape.rotate();
             currShape.getCurrTetromino().clear();
             currShape.initializeShape();
         }
     }
-
 
     public void gameController(Parent root) {
         root.setOnKeyPressed(event -> {

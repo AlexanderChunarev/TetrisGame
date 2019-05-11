@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import sample.MatrixOperations.MatrixOperations;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -76,6 +77,16 @@ public class Shape {
             tetromino.setX(tetromino.getX() + direction * TETROMINO_SIZE);
         }
         setX(getX() + direction * TETROMINO_SIZE);
+    }
+
+    public void rotate() {
+        int[][] rotated = new int[currTetrominoMask[0].length][currTetrominoMask.length];
+        for (int i = 0; i < currTetrominoMask.length; i++){
+            for (int j = 0; j < currTetrominoMask[0].length; j++){
+                rotated[j][rotated[0].length - 1 - i] = currTetrominoMask[i][j];
+            }
+        }
+        currTetrominoMask = rotated;
     }
 
     void initializeShape() {
