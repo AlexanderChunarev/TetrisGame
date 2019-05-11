@@ -171,7 +171,7 @@ public class GameField extends Pane {
     }
 
     private void removeFilledRow() {
-        int count;
+        float count, currScore = 0;
         for (int i = 0; i < glass.length; i++) {
             count = 0;
             for (int j = 0; j < glass[0].length; j++) {
@@ -181,11 +181,12 @@ public class GameField extends Pane {
             }
             if (count == glass[0].length) {
                 moveGlassDown(i);
-                score += 100 * 1.25;
+                currScore += 100;
                 removedLines++;
                 repaint();
             }
         }
+        setScore(currScore);
     }
 
     private void moveGlassDown(int pos) {
@@ -198,6 +199,19 @@ public class GameField extends Pane {
 
             }
         }
+    }
+
+    private void setScore(float currScore) {
+        if (currScore == 400) {
+            score += currScore * 1.75;
+        } else if (currScore == 300) {
+            score += currScore * 1.50;
+        } else if (currScore == 200) {
+            score += currScore * 1.25;
+        } else {
+            score += currScore;
+        }
+
     }
 
     private void rotate() {

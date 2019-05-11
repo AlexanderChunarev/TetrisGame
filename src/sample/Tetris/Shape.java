@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import sample.MatrixOperations.MatrixOperations;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,10 +54,6 @@ public class Shape {
 
     public int[][] getCurrTetrominoMask() {
         return currTetrominoMask;
-    }
-
-    public void setCurrTetrominoMask(int[][] currTetrominoMask) {
-        this.currTetrominoMask = currTetrominoMask;
     }
 
     public ArrayList<Rectangle> getCurrTetromino() {
