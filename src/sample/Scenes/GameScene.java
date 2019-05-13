@@ -65,17 +65,6 @@ public class GameScene extends BaseScene implements InitializeScene {
     public void update() {
         Platform.runLater(() -> {
             gameField.update();
-            score.setText("Score: " + gameField.getScore());
-            if (gameField.getScore() > bestScoreVal) {
-                bestScore.setText("Best: " + gameField.getScore());
-            }
-            if (gameField.getRemovedLines() >= 5) {
-                if (getDELAY() != 50) {
-                    setDELAY(getDELAY() - 50);
-                    System.out.println(getDELAY());
-                    gameField.setRemovedLines(gameField.getRemovedLines() - 5);
-                }
-            }
             if (gameField.getGameOver()) {
                 stop();
                 gameField.getChildren().add(gameOver);
@@ -87,6 +76,17 @@ public class GameScene extends BaseScene implements InitializeScene {
                 rootPane.setOnKeyPressed(event -> {
                 });
                 saveScore();
+            }
+            score.setText("Score: " + gameField.getScore());
+            if (gameField.getScore() > bestScoreVal) {
+                bestScore.setText("Best: " + gameField.getScore());
+            }
+            if (gameField.getRemovedLines() >= 5) {
+                if (getDELAY() != 50) {
+                    setDELAY(getDELAY() - 50);
+                    System.out.println(getDELAY());
+                    gameField.setRemovedLines(gameField.getRemovedLines() - 5);
+                }
             }
         });
     }
